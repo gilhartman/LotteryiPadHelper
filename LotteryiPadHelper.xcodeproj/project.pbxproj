@@ -1,0 +1,372 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2B2DEAEF1ED98F1F009B4A6C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2DEAEE1ED98F1F009B4A6C /* main.m */; };
+		2B2DEAF21ED98F1F009B4A6C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2DEAF11ED98F1F009B4A6C /* AppDelegate.m */; };
+		2B2DEAF51ED98F1F009B4A6C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2DEAF41ED98F1F009B4A6C /* ViewController.m */; };
+		2B2DEAF81ED98F1F009B4A6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B2DEAF61ED98F1F009B4A6C /* Main.storyboard */; };
+		2B2DEAFA1ED98F1F009B4A6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B2DEAF91ED98F1F009B4A6C /* Assets.xcassets */; };
+		2B2DEAFD1ED98F1F009B4A6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B2DEAFB1ED98F1F009B4A6C /* LaunchScreen.storyboard */; };
+		2B2DEB051ED99BC5009B4A6C /* example.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2B2DEB041ED99BC5009B4A6C /* example.xml */; };
+		2BB3E7981F11352E007A7002 /* Balls-vertical.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BB3E7971F11352E007A7002 /* Balls-vertical.png */; };
+		2BBE03371EDA1A7100C35D3B /* ball-trans.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BBE03361EDA1A7100C35D3B /* ball-trans.png */; };
+		2BBE03391EDA1DB100C35D3B /* ball-trans-167.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BBE03381EDA1DB100C35D3B /* ball-trans-167.png */; };
+		2BBE033B1EDA1DF800C35D3B /* ball-trans-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BBE033A1EDA1DF800C35D3B /* ball-trans-76.png */; };
+		2BBE033D1EDA1E2A00C35D3B /* ball-trans-152.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BBE033C1EDA1E2A00C35D3B /* ball-trans-152.png */; };
+		2BEBACAB1F10EEB400DF4092 /* WinningNumbersParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BEBACAA1F10EEB400DF4092 /* WinningNumbersParser.m */; };
+		2BEBACAF1F11028600DF4092 /* example2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2BEBACAC1F11028600DF4092 /* example2.xml */; };
+		2BEBACB01F11028600DF4092 /* example3.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2BEBACAD1F11028600DF4092 /* example3.xml */; };
+		2BEBACB11F11028600DF4092 /* example4.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2BEBACAE1F11028600DF4092 /* example4.xml */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2B2DEAEA1ED98F1F009B4A6C /* LotteryiPadHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LotteryiPadHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B2DEAEE1ED98F1F009B4A6C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2B2DEAF01ED98F1F009B4A6C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		2B2DEAF11ED98F1F009B4A6C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		2B2DEAF31ED98F1F009B4A6C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		2B2DEAF41ED98F1F009B4A6C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		2B2DEAF71ED98F1F009B4A6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2B2DEAF91ED98F1F009B4A6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2B2DEAFC1ED98F1F009B4A6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2B2DEAFE1ED98F1F009B4A6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B2DEB041ED99BC5009B4A6C /* example.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = example.xml; sourceTree = "<group>"; };
+		2BB3E7971F11352E007A7002 /* Balls-vertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Balls-vertical.png"; sourceTree = "<group>"; };
+		2BBE03361EDA1A7100C35D3B /* ball-trans.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-trans.png"; sourceTree = "<group>"; };
+		2BBE03381EDA1DB100C35D3B /* ball-trans-167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-trans-167.png"; sourceTree = "<group>"; };
+		2BBE033A1EDA1DF800C35D3B /* ball-trans-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-trans-76.png"; sourceTree = "<group>"; };
+		2BBE033C1EDA1E2A00C35D3B /* ball-trans-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-trans-152.png"; sourceTree = "<group>"; };
+		2BEBACA91F10EDC800DF4092 /* WinningNumbersParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WinningNumbersParser.h; sourceTree = "<group>"; };
+		2BEBACAA1F10EEB400DF4092 /* WinningNumbersParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WinningNumbersParser.m; sourceTree = "<group>"; };
+		2BEBACAC1F11028600DF4092 /* example2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = example2.xml; sourceTree = "<group>"; };
+		2BEBACAD1F11028600DF4092 /* example3.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = example3.xml; sourceTree = "<group>"; };
+		2BEBACAE1F11028600DF4092 /* example4.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = example4.xml; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2B2DEAE71ED98F1F009B4A6C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2B2DEAE11ED98F1F009B4A6C = {
+			isa = PBXGroup;
+			children = (
+				2B2DEAEC1ED98F1F009B4A6C /* LotteryiPadHelper */,
+				2B2DEAEB1ED98F1F009B4A6C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2B2DEAEB1ED98F1F009B4A6C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2B2DEAEA1ED98F1F009B4A6C /* LotteryiPadHelper.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2B2DEAEC1ED98F1F009B4A6C /* LotteryiPadHelper */ = {
+			isa = PBXGroup;
+			children = (
+				2BB3E7971F11352E007A7002 /* Balls-vertical.png */,
+				2BBE03381EDA1DB100C35D3B /* ball-trans-167.png */,
+				2BBE033C1EDA1E2A00C35D3B /* ball-trans-152.png */,
+				2BBE03361EDA1A7100C35D3B /* ball-trans.png */,
+				2BBE033A1EDA1DF800C35D3B /* ball-trans-76.png */,
+				2B2DEB041ED99BC5009B4A6C /* example.xml */,
+				2BEBACAC1F11028600DF4092 /* example2.xml */,
+				2BEBACAD1F11028600DF4092 /* example3.xml */,
+				2BEBACAE1F11028600DF4092 /* example4.xml */,
+				2B2DEAF01ED98F1F009B4A6C /* AppDelegate.h */,
+				2B2DEAF11ED98F1F009B4A6C /* AppDelegate.m */,
+				2B2DEAF31ED98F1F009B4A6C /* ViewController.h */,
+				2B2DEAF41ED98F1F009B4A6C /* ViewController.m */,
+				2BEBACA91F10EDC800DF4092 /* WinningNumbersParser.h */,
+				2BEBACAA1F10EEB400DF4092 /* WinningNumbersParser.m */,
+				2B2DEAF61ED98F1F009B4A6C /* Main.storyboard */,
+				2B2DEAF91ED98F1F009B4A6C /* Assets.xcassets */,
+				2B2DEAFB1ED98F1F009B4A6C /* LaunchScreen.storyboard */,
+				2B2DEAFE1ED98F1F009B4A6C /* Info.plist */,
+				2B2DEAED1ED98F1F009B4A6C /* Supporting Files */,
+			);
+			path = LotteryiPadHelper;
+			sourceTree = "<group>";
+		};
+		2B2DEAED1ED98F1F009B4A6C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2B2DEAEE1ED98F1F009B4A6C /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2B2DEAE91ED98F1F009B4A6C /* LotteryiPadHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B2DEB011ED98F1F009B4A6C /* Build configuration list for PBXNativeTarget "LotteryiPadHelper" */;
+			buildPhases = (
+				2B2DEAE61ED98F1F009B4A6C /* Sources */,
+				2B2DEAE71ED98F1F009B4A6C /* Frameworks */,
+				2B2DEAE81ED98F1F009B4A6C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LotteryiPadHelper;
+			productName = LotteryiPadHelper;
+			productReference = 2B2DEAEA1ED98F1F009B4A6C /* LotteryiPadHelper.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2B2DEAE21ED98F1F009B4A6C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Hartman;
+				TargetAttributes = {
+					2B2DEAE91ED98F1F009B4A6C = {
+						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = 833SWH7QL6;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 2B2DEAE51ED98F1F009B4A6C /* Build configuration list for PBXProject "LotteryiPadHelper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2B2DEAE11ED98F1F009B4A6C;
+			productRefGroup = 2B2DEAEB1ED98F1F009B4A6C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2B2DEAE91ED98F1F009B4A6C /* LotteryiPadHelper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2B2DEAE81ED98F1F009B4A6C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B2DEAFD1ED98F1F009B4A6C /* LaunchScreen.storyboard in Resources */,
+				2BEBACB11F11028600DF4092 /* example4.xml in Resources */,
+				2B2DEAFA1ED98F1F009B4A6C /* Assets.xcassets in Resources */,
+				2BBE033D1EDA1E2A00C35D3B /* ball-trans-152.png in Resources */,
+				2BEBACAF1F11028600DF4092 /* example2.xml in Resources */,
+				2BEBACB01F11028600DF4092 /* example3.xml in Resources */,
+				2BB3E7981F11352E007A7002 /* Balls-vertical.png in Resources */,
+				2BBE03391EDA1DB100C35D3B /* ball-trans-167.png in Resources */,
+				2BBE033B1EDA1DF800C35D3B /* ball-trans-76.png in Resources */,
+				2B2DEB051ED99BC5009B4A6C /* example.xml in Resources */,
+				2B2DEAF81ED98F1F009B4A6C /* Main.storyboard in Resources */,
+				2BBE03371EDA1A7100C35D3B /* ball-trans.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2B2DEAE61ED98F1F009B4A6C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2BEBACAB1F10EEB400DF4092 /* WinningNumbersParser.m in Sources */,
+				2B2DEAF51ED98F1F009B4A6C /* ViewController.m in Sources */,
+				2B2DEAF21ED98F1F009B4A6C /* AppDelegate.m in Sources */,
+				2B2DEAEF1ED98F1F009B4A6C /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2B2DEAF61ED98F1F009B4A6C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B2DEAF71ED98F1F009B4A6C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		2B2DEAFB1ED98F1F009B4A6C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B2DEAFC1ED98F1F009B4A6C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2B2DEAFF1ED98F1F009B4A6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		2B2DEB001ED98F1F009B4A6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2B2DEB021ED98F1F009B4A6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = 833SWH7QL6;
+				INFOPLIST_FILE = LotteryiPadHelper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hartman.LotteryiPadHelper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "a9bea978-167e-435c-9d08-680df9117fa6";
+				PROVISIONING_PROFILE_SPECIFIER = WildCardManyServices;
+			};
+			name = Debug;
+		};
+		2B2DEB031ED98F1F009B4A6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = 833SWH7QL6;
+				INFOPLIST_FILE = LotteryiPadHelper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hartman.LotteryiPadHelper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "a9bea978-167e-435c-9d08-680df9117fa6";
+				PROVISIONING_PROFILE_SPECIFIER = WildCardManyServices;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2B2DEAE51ED98F1F009B4A6C /* Build configuration list for PBXProject "LotteryiPadHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B2DEAFF1ED98F1F009B4A6C /* Debug */,
+				2B2DEB001ED98F1F009B4A6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B2DEB011ED98F1F009B4A6C /* Build configuration list for PBXNativeTarget "LotteryiPadHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B2DEB021ED98F1F009B4A6C /* Debug */,
+				2B2DEB031ED98F1F009B4A6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2B2DEAE21ED98F1F009B4A6C /* Project object */;
+}
