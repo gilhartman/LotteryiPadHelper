@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController <NSXMLParserDelegate, UITextFieldDelegate>
+@interface ViewController : UIViewController <NSXMLParserDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 
 - (void) initXmlParser: (NSURL*) filePath;

@@ -16,5 +16,7 @@
 
 - (NSArray*) getWinningNumbers;
 
+- (NSArray*) getPrizes;
+
 @end
 #endif /* WinningNumbersParser_h */

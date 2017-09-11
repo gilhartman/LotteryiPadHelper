@@ -21,11 +21,16 @@
 @property (weak, nonatomic) IBOutlet UITextView *outputText;
 @property (weak, nonatomic) IBOutlet UITextView *winningOutputText;
 @property (weak, nonatomic) IBOutlet UITextView *generalWinningOutputText;
-@property (nonatomic, strong) NSString *currentTicket;
-@property (nonatomic, strong) NSString *currentTicketText;
+@property (weak, nonatomic) IBOutlet UITableView *tableview;
+@property (nonatomic, strong) NSString *currentTicketOrdinal;
+@property (nonatomic, strong) NSNumber *currentTicketTotalWinnings;
+@property (nonatomic, strong) NSString *currentTicketWinningsList;
+@property (nonatomic, strong) NSString *currentTicketFirstBetNumbers;
 @property (nonatomic) bool currentTicketWinner;
 @property (nonatomic, strong) NSMutableArray *numbersArray;
+@property (nonatomic, strong) NSArray *prizesArray;
 @property (nonatomic, strong) NSXMLParser *xmlParser;
+@property (nonatomic, strong) NSMutableArray *tableData;
 @end
 
 @implementation ViewController
@@ -37,13 +42,32 @@
     [[self outputText] setText: @"Waiting for file...."];
     [[self winningOutputText] setText: @""];
     [[self generalWinningOutputText] setText: @""];
-//    [self debugSetup];
+    self.tableData = [[NSMutableArray alloc] init];
+    [self debugSetup];
 }
 
 - (void) debugSetup {
-    [self initXmlParser: [[NSBundle mainBundle] URLForResource:@"example3" withExtension:@".xml"]];
+    [self initXmlParser: [[NSBundle mainBundle] URLForResource:@"example2" withExtension:@".xml"]];
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.tableData count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *simpleTableIdentifier = @"SimpleTableItem";
+
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    }
+
+    cell.textLabel.text = [self.tableData objectAtIndex:indexPath.row];
+    return cell;
+}
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
 
@@ -58,24 +82,41 @@
     }
 
     if ([elementName isEqualToString: @"bet"]) {
-        self.currentTicket = attributeDict[@"OrdinalNumber"];
+        self.currentTicketOrdinal = attributeDict[@"OrdinalNumber"];
         self.currentTicketWinner = NO;
-        self.currentTicketText = @"";
+        self.currentTicketTotalWinnings = 0;
+        self.currentTicketWinningsList = @"";
+        self.currentTicketFirstBetNumbers = nil;
     }
     if ([elementName hasPrefix: @"Block"]) {
-        NSArray *numersInBlock = [attributeDict[@"RegularGuess"] componentsSeparatedByString: @","];
+        NSString *guessString = attributeDict[@"RegularGuess"];
+        NSArray *numersInBlock = [guessString componentsSeparatedByString: @","];
+        if (self.currentTicketFirstBetNumbers == nil) {
+            self.currentTicketFirstBetNumbers = [guessString copy];
+        }
         int matchings = 0;
         for (UITextField *number in self.numbersArray) {
             if ([numersInBlock containsObject: number.text]) {
                 matchings += 1;
             }
         }
-        if (matchings >= 3) {
+        BOOL extraNum = [numersInBlock containsObject: self.extraNumber.text];
+        if (matchings >= 3 || (matchings == 2 && extraNum)) {
             self.currentTicketWinner = YES;
-            self.generalWinningOutputText.text = [self.generalWinningOutputText.text stringByAppendingString: [NSString stringWithFormat: @"Ticket %@ - %@\n", self.currentTicket, elementName]];
-        } else if (matchings == 2 && [numersInBlock containsObject: self.extraNumber.text]) {
-            self.currentTicketText = [self.currentTicketText stringByAppendingString: [NSString stringWithFormat: @"Ticket %@ - %@\n", self.currentTicket, elementName]];
         }
+        int addIfNeeded = extraNum ? 0 : 1;
+        NSNumber *currentBlockWinning = 0;
+        switch (matchings) {
+            case 6: currentBlockWinning = self.prizesArray[0]; break;
+            case 5: currentBlockWinning = self.prizesArray[1+addIfNeeded]; break;
+            case 4: currentBlockWinning = self.prizesArray[3+addIfNeeded]; break;
+            case 3: currentBlockWinning = self.prizesArray[5+addIfNeeded]; break;
+        }
+        if (matchings == 2 && extraNum) {
+            currentBlockWinning = self.prizesArray[7];
+        }
+        self.currentTicketWinningsList = [self.currentTicketWinningsList stringByAppendingString: [NSString stringWithFormat: @"%lu, ", [currentBlockWinning longValue]]];
+        self.currentTicketTotalWinnings = @([self.currentTicketTotalWinnings longValue] + [currentBlockWinning longValue]);
     }
 
 }
@@ -83,11 +124,10 @@
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
     if ([elementName isEqualToString: @"bet"]) {
         if (self.currentTicketWinner) {
-            self.winningOutputText.text = [self.winningOutputText.text stringByAppendingString: self.currentTicketText];
-        } else {
-            self.outputText.text = [self.outputText.text stringByAppendingString: self.currentTicketText];
+            [self.tableData addObject:[NSString stringWithFormat: @"Ticket %@ - %@ - %@ - %@", self.currentTicketOrdinal, self.currentTicketTotalWinnings, self.currentTicketWinningsList, self.currentTicketFirstBetNumbers]];
         }
     }
+    [self.tableview reloadData];
 }
 
 - (void) getWinningNumbers: (NSString*) url {
@@ -106,7 +146,7 @@
                                                         
                                                     }];
      [dataTask resume];
-    while ([winningNumbersParser getWinningNumbers] == nil) {
+    while (([winningNumbersParser getWinningNumbers] == nil) && ([winningNumbersParser getPrizes] == nil)) {
         [NSThread sleepForTimeInterval:0.3f];
     }
     NSArray* winningNumbers = [winningNumbersParser getWinningNumbers];
@@ -118,6 +158,9 @@
     [self.number5 setText:winningNumbers[4]];
     [self.number6 setText:winningNumbers[5]];
     [self.extraNumber setText:winningNumbers[6]];
+
+    self.prizesArray = [winningNumbersParser getPrizes];
+    NSLog(@"Prizes: %@", self.prizesArray);
 }
 
 - (void) initXmlParser: (NSURL*) filePath {

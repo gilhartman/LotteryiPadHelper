@@ -12,16 +12,19 @@
 @interface WinningNumbersParser ()
 @property (nonatomic, strong) NSXMLParser *numbersXmlParser;
 @property (nonatomic, strong) NSMutableArray *winningNumbers;
+@property (nonatomic, strong) NSMutableArray *prizes;
 @end
 
 @implementation WinningNumbersParser
 
 Boolean insideNumber = NO;
+Boolean insidePrize = NO;
 
 - (id) init
 {
     self = [super init];
     self.winningNumbers = [[NSMutableArray alloc]init];
+    self.prizes = [[NSMutableArray alloc]init];
     return self;
 }
 
@@ -30,13 +33,23 @@ Boolean insideNumber = NO;
     if ([elementName isEqualToString: @"Number"]) {
         insideNumber = YES;
     }
+    if ([elementName isEqualToString: @"Prize"]) {
+        insidePrize = YES;
+    }
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
 {
     if (insideNumber) {
-        NSLog(@"found: %@", string); // output book title here
+        NSLog(@"found number: %@", string);
         [self.winningNumbers addObject: string];
+    }
+    if (insidePrize) {
+        NSLog(@"found prize: %@", string);
+        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+        f.numberStyle = NSNumberFormatterDecimalStyle;
+        NSNumber *prizeMoney = [f numberFromString:string];
+        [self.prizes addObject: prizeMoney];
     }
 }
 
@@ -44,6 +57,9 @@ Boolean insideNumber = NO;
 
     if ([elementName isEqualToString: @"Number"]) {
         insideNumber = NO;
+    }
+    if ([elementName isEqualToString: @"Prize"]) {
+        insidePrize = NO;
     }
 }
 
@@ -55,6 +71,13 @@ Boolean insideNumber = NO;
     }
 }
 
+- (NSArray*) getPrizes {
+    if ([self.prizes count] < 8) {
+        return nil;
+    } else {
+        return self.prizes;
+    }
+}
 
 
 @end
