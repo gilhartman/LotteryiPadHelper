@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "WinningNumbersParser.h"
+#import "MultiColumnTableViewCell.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *number1;
@@ -18,10 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *number6;
 @property (weak, nonatomic) IBOutlet UITextField *extraNumber;
 @property (weak, nonatomic) IBOutlet UILabel *drawDate;
-@property (weak, nonatomic) IBOutlet UITextView *outputText;
-@property (weak, nonatomic) IBOutlet UITextView *winningOutputText;
-@property (weak, nonatomic) IBOutlet UITextView *generalWinningOutputText;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, strong) NSString *currentTicketOrdinal;
 @property (nonatomic, strong) NSNumber *currentTicketTotalWinnings;
 @property (nonatomic, strong) NSString *currentTicketWinningsList;
@@ -39,10 +38,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.numbersArray = [[NSMutableArray alloc] initWithObjects: self.number1,self.number2,self.number3,self.number4,self.number5,self.number6,nil];
-    [[self outputText] setText: @"Waiting for file...."];
-    [[self winningOutputText] setText: @""];
-    [[self generalWinningOutputText] setText: @""];
     self.tableData = [[NSMutableArray alloc] init];
+    [self.tableview registerClass:[MultiColumnTableViewCell class] forCellReuseIdentifier:@"Cell"];
+    self.tableview.separatorColor = [UIColor lightGrayColor];
+    self.spinner.hidesWhenStopped = YES;
+    [self.spinner stopAnimating];
     [self debugSetup];
 }
 
@@ -52,20 +52,31 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.tableData count];
+    return [self.tableData count]+1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *simpleTableIdentifier = @"SimpleTableItem";
-
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    MultiColumnTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    if (indexPath.row == 0) {
+        [cell.label1 setFont:[UIFont boldSystemFontOfSize:20]];
+        [cell.label2 setFont:[UIFont boldSystemFontOfSize:20]];
+        [cell.label3 setFont:[UIFont boldSystemFontOfSize:20]];
+        [cell.label4 setFont:[UIFont boldSystemFontOfSize:20]];
+        cell.label1.text = @"Ticket Number";
+        cell.label2.text = @"Total Wins";
+        cell.label3.text = @"Wins Per Bet";
+        cell.label4.text = @"First Bet Numbers";
+    } else {
+        [cell.label1 setFont:[UIFont systemFontOfSize:16]];
+        [cell.label2 setFont:[UIFont systemFontOfSize:16]];
+        [cell.label3 setFont:[UIFont systemFontOfSize:16]];
+        [cell.label4 setFont:[UIFont systemFontOfSize:16]];
+        cell.label1.text = [[self.tableData objectAtIndex:indexPath.row-1] objectAtIndex: 0];
+        cell.label2.text = [[self.tableData objectAtIndex:indexPath.row-1] objectAtIndex: 1];
+        cell.label3.text = [[self.tableData objectAtIndex:indexPath.row-1] objectAtIndex: 2];
+        cell.label4.text = [[self.tableData objectAtIndex:indexPath.row-1] objectAtIndex: 3];
     }
-
-    cell.textLabel.text = [self.tableData objectAtIndex:indexPath.row];
     return cell;
 }
 
@@ -124,10 +135,15 @@
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
     if ([elementName isEqualToString: @"bet"]) {
         if (self.currentTicketWinner) {
-            [self.tableData addObject:[NSString stringWithFormat: @"Ticket %@ - %@ - %@ - %@", self.currentTicketOrdinal, self.currentTicketTotalWinnings, self.currentTicketWinningsList, self.currentTicketFirstBetNumbers]];
+            NSString *f = [self.currentTicketWinningsList substringToIndex:[self.currentTicketWinningsList length]-2];
+            NSString * t = [self.currentTicketFirstBetNumbers stringByReplacingOccurrencesOfString:@"," withString:@", "];
+            NSArray *rowData = @[self.currentTicketOrdinal, [self.currentTicketTotalWinnings stringValue], f, t];
+            [self.tableData addObject: rowData];
         }
     }
-    [self.tableview reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableview reloadData];
+    });
 }
 
 - (void) getWinningNumbers: (NSString*) url {
@@ -151,13 +167,16 @@
     }
     NSArray* winningNumbers = [winningNumbersParser getWinningNumbers];
     NSLog(@"Winning numbers: %@", winningNumbers);
-    [self.number1 setText:winningNumbers[0]];
-    [self.number2 setText:winningNumbers[1]];
-    [self.number3 setText:winningNumbers[2]];
-    [self.number4 setText:winningNumbers[3]];
-    [self.number5 setText:winningNumbers[4]];
-    [self.number6 setText:winningNumbers[5]];
-    [self.extraNumber setText:winningNumbers[6]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinner stopAnimating];
+        [self.number1 setText:winningNumbers[0]];
+        [self.number2 setText:winningNumbers[1]];
+        [self.number3 setText:winningNumbers[2]];
+        [self.number4 setText:winningNumbers[3]];
+        [self.number5 setText:winningNumbers[4]];
+        [self.number6 setText:winningNumbers[5]];
+        [self.extraNumber setText:winningNumbers[6]];
+    });
 
     self.prizesArray = [winningNumbersParser getPrizes];
     NSLog(@"Prizes: %@", self.prizesArray);
@@ -167,10 +186,11 @@
     self.xmlParser = [[NSXMLParser alloc] initWithContentsOfURL:filePath];
     [self.xmlParser setDelegate:self];
     [[self drawDate] setText: @""];
-    [[self outputText] setText: @""];
-    [[self winningOutputText] setText: @""];
-    [[self generalWinningOutputText] setText: @""];
-    [self.xmlParser parse];
+    [self.tableData removeAllObjects];
+    [self.spinner startAnimating];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        [self.xmlParser parse];
+    });
 }
 
 
