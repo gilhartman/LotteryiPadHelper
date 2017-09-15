@@ -43,7 +43,9 @@
     self.tableview.separatorColor = [UIColor lightGrayColor];
     self.spinner.hidesWhenStopped = YES;
     [self.spinner stopAnimating];
+    #if TARGET_IPHONE_SIMULATOR
     [self debugSetup];
+    #endif
 }
 
 - (void) debugSetup {
@@ -85,7 +87,9 @@
     if ([elementName isEqualToString: @"head"]) {
         NSString* LocalDrawDateTime = attributeDict[@"LocalDrawDateTime"];
         NSArray* date_time = [LocalDrawDateTime componentsSeparatedByString:@" "];
-        [self.drawDate setText: date_time[0]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.drawDate setText: date_time[0]];
+        });
         NSArray* date_components = [date_time[0] componentsSeparatedByString:@"-"];
         NSString* url = [NSString stringWithFormat:@"https://resultsservice.lottery.ie//resultsservice.asmx/GetResultsForDate?drawType=Lotto&drawDate=%@-%@-%@", date_components[2], date_components[1], date_components[0]];
         [self getWinningNumbers:url];
@@ -152,16 +156,28 @@
 
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask * dataTask = [session dataTaskWithURL:[NSURL URLWithString: url]
-                                                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                        if(error == nil)
-                                                        {
-                                                            NSXMLParser * numbersXmlParser = [[NSXMLParser alloc] initWithData:data];
-                                                            [numbersXmlParser setDelegate: winningNumbersParser];
-                                                            [numbersXmlParser parse];
-                                                        }
-                                                        
-                                                    }];
-     [dataTask resume];
+                                             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                 if(error == nil)
+                                                 {
+                                                     NSXMLParser * numbersXmlParser = [[NSXMLParser alloc] initWithData:data];
+                                                     [numbersXmlParser setDelegate: winningNumbersParser];
+                                                     [numbersXmlParser parse];
+                                                 } else {
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         [self.spinner stopAnimating];
+                                                         NSLog(@"Error in connecting %@", error);
+                                                         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"No Network"
+                                                                                                                        message:@"Could not connect to lottery site. Please try again"
+                                                                                                                 preferredStyle:UIAlertControllerStyleAlert];
+                                                         UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                                                                               handler:^(UIAlertAction * action) {
+                                                                                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                                                                                                               }];
+                                                         [alert addAction:defaultAction];
+                                                         [self presentViewController:alert animated:YES completion:nil];                                                });
+                                                 }
+                                             }];
+    [dataTask resume];
     while (([winningNumbersParser getWinningNumbers] == nil) && ([winningNumbersParser getPrizes] == nil)) {
         [NSThread sleepForTimeInterval:0.3f];
     }
@@ -185,8 +201,14 @@
 - (void) initXmlParser: (NSURL*) filePath {
     self.xmlParser = [[NSXMLParser alloc] initWithContentsOfURL:filePath];
     [self.xmlParser setDelegate:self];
-    [[self drawDate] setText: @""];
+    [self.drawDate setText: @""];
     [self.tableData removeAllObjects];
+    self.prizesArray = nil;
+    for (UITextField* number in self.numbersArray) {
+        [number setText: @""];
+        [self.extraNumber setText:@""];
+    }
+    [self.tableview reloadData];
     [self.spinner startAnimating];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         [self.xmlParser parse];

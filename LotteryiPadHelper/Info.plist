@@ -43,9 +43,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -64,12 +64,12 @@
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
-			<key>UTTypeDescription</key>
-			<string>XML Format</string>
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.text</string>
 			</array>
+			<key>UTTypeDescription</key>
+			<string>XML Format</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.hartman.xml</string>
 			<key>UTTypeTagSpecification</key>
