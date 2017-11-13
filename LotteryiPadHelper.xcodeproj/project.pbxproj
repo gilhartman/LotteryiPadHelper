@@ -16,6 +16,9 @@
 		2B2DEB051ED99BC5009B4A6C /* example.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2B2DEB041ED99BC5009B4A6C /* example.xml */; };
 		2B2EE23A1F6864D3002167D7 /* MultiColumnTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE2391F6864D3002167D7 /* MultiColumnTableViewCell.m */; };
 		2BB3E7981F11352E007A7002 /* Balls-vertical.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BB3E7971F11352E007A7002 /* Balls-vertical.png */; };
+		2BBA0E5F1FBA0BD30084042E /* example5.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2BBA0E5C1FBA0BD30084042E /* example5.xml */; };
+		2BBA0E601FBA0BD30084042E /* example6.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2BBA0E5D1FBA0BD30084042E /* example6.xml */; };
+		2BBA0E611FBA0BD30084042E /* example7.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2BBA0E5E1FBA0BD30084042E /* example7.xml */; };
 		2BBE03371EDA1A7100C35D3B /* ball-trans.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BBE03361EDA1A7100C35D3B /* ball-trans.png */; };
 		2BBE03391EDA1DB100C35D3B /* ball-trans-167.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BBE03381EDA1DB100C35D3B /* ball-trans-167.png */; };
 		2BBE033B1EDA1DF800C35D3B /* ball-trans-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BBE033A1EDA1DF800C35D3B /* ball-trans-76.png */; };
@@ -41,6 +44,9 @@
 		2B2EE2381F686475002167D7 /* MultiColumnTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiColumnTableViewCell.h; sourceTree = "<group>"; };
 		2B2EE2391F6864D3002167D7 /* MultiColumnTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiColumnTableViewCell.m; sourceTree = "<group>"; };
 		2BB3E7971F11352E007A7002 /* Balls-vertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Balls-vertical.png"; sourceTree = "<group>"; };
+		2BBA0E5C1FBA0BD30084042E /* example5.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = example5.xml; sourceTree = "<group>"; };
+		2BBA0E5D1FBA0BD30084042E /* example6.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = example6.xml; sourceTree = "<group>"; };
+		2BBA0E5E1FBA0BD30084042E /* example7.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = example7.xml; sourceTree = "<group>"; };
 		2BBE03361EDA1A7100C35D3B /* ball-trans.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-trans.png"; sourceTree = "<group>"; };
 		2BBE03381EDA1DB100C35D3B /* ball-trans-167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-trans-167.png"; sourceTree = "<group>"; };
 		2BBE033A1EDA1DF800C35D3B /* ball-trans-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-trans-76.png"; sourceTree = "<group>"; };
@@ -91,6 +97,9 @@
 				2BEBACAC1F11028600DF4092 /* example2.xml */,
 				2BEBACAD1F11028600DF4092 /* example3.xml */,
 				2BEBACAE1F11028600DF4092 /* example4.xml */,
+				2BBA0E5C1FBA0BD30084042E /* example5.xml */,
+				2BBA0E5D1FBA0BD30084042E /* example6.xml */,
+				2BBA0E5E1FBA0BD30084042E /* example7.xml */,
 				2B2DEAF01ED98F1F009B4A6C /* AppDelegate.h */,
 				2B2DEAF11ED98F1F009B4A6C /* AppDelegate.m */,
 				2B2EE2381F686475002167D7 /* MultiColumnTableViewCell.h */,
@@ -178,13 +187,16 @@
 				2B2DEAFD1ED98F1F009B4A6C /* LaunchScreen.storyboard in Resources */,
 				2BEBACB11F11028600DF4092 /* example4.xml in Resources */,
 				2B2DEAFA1ED98F1F009B4A6C /* Assets.xcassets in Resources */,
+				2BBA0E601FBA0BD30084042E /* example6.xml in Resources */,
 				2BBE033D1EDA1E2A00C35D3B /* ball-trans-152.png in Resources */,
 				2BEBACAF1F11028600DF4092 /* example2.xml in Resources */,
 				2BEBACB01F11028600DF4092 /* example3.xml in Resources */,
 				2BB3E7981F11352E007A7002 /* Balls-vertical.png in Resources */,
 				2BBE03391EDA1DB100C35D3B /* ball-trans-167.png in Resources */,
+				2BBA0E611FBA0BD30084042E /* example7.xml in Resources */,
 				2BBE033B1EDA1DF800C35D3B /* ball-trans-76.png in Resources */,
 				2B2DEB051ED99BC5009B4A6C /* example.xml in Resources */,
+				2BBA0E5F1FBA0BD30084042E /* example5.xml in Resources */,
 				2B2DEAF81ED98F1F009B4A6C /* Main.storyboard in Resources */,
 				2BBE03371EDA1A7100C35D3B /* ball-trans.png in Resources */,
 			);

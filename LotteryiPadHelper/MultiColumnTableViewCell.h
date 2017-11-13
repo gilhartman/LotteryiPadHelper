@@ -14,6 +14,7 @@
 @property (strong, nonatomic) UILabel *label2;
 @property (strong, nonatomic) UILabel *label3;
 @property (strong, nonatomic) UILabel *label4;
+@property (strong, nonatomic) UILabel *label5;
 @end
 
 #endif /* MultiColumnTableViewCell_h */

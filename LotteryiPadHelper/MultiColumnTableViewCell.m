@@ -14,6 +14,7 @@
 @property (strong, nonatomic) UIView *divider1;
 @property (strong, nonatomic) UIView *divider2;
 @property (strong, nonatomic) UIView *divider3;
+@property (strong, nonatomic) UIView *divider4;
 @end
 
 @implementation MultiColumnTableViewCell
@@ -43,15 +44,17 @@
     self.divider1 = [self divider];
     self.divider2 = [self divider];
     self.divider3 = [self divider];
+    self.divider4 = [self divider];
 
     self.label1 = [self label];
     self.label2 = [self label];
     self.label3 = [self label];
     self.label4 = [self label];
+    self.label5 = [self label];
 
-    NSDictionary *views = NSDictionaryOfVariableBindings(_label1, _label2, _label3, _label4, _divider1, _divider2, _divider3);
+    NSDictionary *views = NSDictionaryOfVariableBindings(_label1, _label2, _label3, _label4, _label5, _divider1, _divider2, _divider3, _divider4);
 
-    NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_label1]-2-[_divider1]-2-[_label2(==_label1)]-2-[_divider2]-2-[_label3(==_label1)]-2-[_divider3]-2-[_label4(==_label1)]-5-|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views];
+    NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_label1]-2-[_divider1]-2-[_label2(==_label1)]-2-[_divider2]-2-[_label3(==_label1)]-2-[_divider3]-2-[_label4(==_label1)]-2-[_divider4]-2-[_label5(==_label1)]-5-|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views];
     [self.contentView addConstraints:constraints];
 
     NSArray *horizontalConstraints1 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_divider1]|" options:0 metrics:nil views:views];
@@ -60,6 +63,8 @@
     [self.contentView addConstraints:horizontalConstraints2];
     NSArray *horizontalConstraints3 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_divider3]|" options:0 metrics:nil views:views];
     [self.contentView addConstraints:horizontalConstraints3];
+    NSArray *horizontalConstraints4 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_divider4]|" options:0 metrics:nil views:views];
+    [self.contentView addConstraints:horizontalConstraints4];
     return self;
 }
 

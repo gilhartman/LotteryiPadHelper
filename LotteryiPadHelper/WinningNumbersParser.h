@@ -13,6 +13,7 @@
 
 @interface WinningNumbersParser : NSObject <NSXMLParserDelegate>
 
+-(id)initWithdrawDate:(NSString *)draw_date;
 
 - (NSArray*) getWinningNumbers;
 

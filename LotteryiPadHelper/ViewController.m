@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, strong) NSString *currentTicketOrdinal;
 @property (nonatomic, strong) NSNumber *currentTicketTotalWinnings;
+@property (nonatomic, strong) NSNumber *currentTicketTotalWinningsNo3s;
 @property (nonatomic, strong) NSString *currentTicketWinningsList;
 @property (nonatomic, strong) NSString *currentTicketFirstBetNumbers;
 @property (nonatomic) bool currentTicketWinner;
@@ -49,7 +50,7 @@
 }
 
 - (void) debugSetup {
-    [self initXmlParser: [[NSBundle mainBundle] URLForResource:@"example2" withExtension:@".xml"]];
+    [self initXmlParser: [[NSBundle mainBundle] URLForResource:@"example7" withExtension:@".xml"]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -65,19 +66,23 @@
         [cell.label2 setFont:[UIFont boldSystemFontOfSize:20]];
         [cell.label3 setFont:[UIFont boldSystemFontOfSize:20]];
         [cell.label4 setFont:[UIFont boldSystemFontOfSize:20]];
+        [cell.label5 setFont:[UIFont boldSystemFontOfSize:20]];
         cell.label1.text = @"Ticket Number";
         cell.label2.text = @"Total Wins";
-        cell.label3.text = @"Wins Per Bet";
-        cell.label4.text = @"First Bet Numbers";
+        cell.label3.text = @"Netbet Wins";
+        cell.label4.text = @"Wins Per Bet";
+        cell.label5.text = @"First Bet Numbers";
     } else {
         [cell.label1 setFont:[UIFont systemFontOfSize:16]];
         [cell.label2 setFont:[UIFont systemFontOfSize:16]];
         [cell.label3 setFont:[UIFont systemFontOfSize:16]];
         [cell.label4 setFont:[UIFont systemFontOfSize:16]];
+        [cell.label5 setFont:[UIFont systemFontOfSize:16]];
         cell.label1.text = [[self.tableData objectAtIndex:indexPath.row-1] objectAtIndex: 0];
         cell.label2.text = [[self.tableData objectAtIndex:indexPath.row-1] objectAtIndex: 1];
         cell.label3.text = [[self.tableData objectAtIndex:indexPath.row-1] objectAtIndex: 2];
         cell.label4.text = [[self.tableData objectAtIndex:indexPath.row-1] objectAtIndex: 3];
+        cell.label5.text = [[self.tableData objectAtIndex:indexPath.row-1] objectAtIndex: 4];
     }
     return cell;
 }
@@ -91,8 +96,8 @@
             [self.drawDate setText: date_time[0]];
         });
         NSArray* date_components = [date_time[0] componentsSeparatedByString:@"-"];
-        NSString* url = [NSString stringWithFormat:@"https://resultsservice.lottery.ie//resultsservice.asmx/GetResultsForDate?drawType=Lotto&drawDate=%@-%@-%@", date_components[2], date_components[1], date_components[0]];
-        [self getWinningNumbers:url];
+        NSString* draw_date = [NSString stringWithFormat: @"%@-%@-%@", date_components[2], date_components[1], date_components[0]];
+        [self getWinningNumbers:draw_date];
 
     }
 
@@ -100,6 +105,7 @@
         self.currentTicketOrdinal = attributeDict[@"OrdinalNumber"];
         self.currentTicketWinner = NO;
         self.currentTicketTotalWinnings = 0;
+        self.currentTicketTotalWinningsNo3s = 0;
         self.currentTicketWinningsList = @"";
         self.currentTicketFirstBetNumbers = nil;
     }
@@ -132,6 +138,9 @@
         }
         self.currentTicketWinningsList = [self.currentTicketWinningsList stringByAppendingString: [NSString stringWithFormat: @"%lu, ", [currentBlockWinning longValue]]];
         self.currentTicketTotalWinnings = @([self.currentTicketTotalWinnings longValue] + [currentBlockWinning longValue]);
+        if ([currentBlockWinning longValue] != 3) {
+            self.currentTicketTotalWinningsNo3s = @([self.currentTicketTotalWinningsNo3s longValue] + [currentBlockWinning longValue]);
+        }
     }
 
 }
@@ -141,7 +150,7 @@
         if (self.currentTicketWinner) {
             NSString *f = [self.currentTicketWinningsList substringToIndex:[self.currentTicketWinningsList length]-2];
             NSString * t = [self.currentTicketFirstBetNumbers stringByReplacingOccurrencesOfString:@"," withString:@", "];
-            NSArray *rowData = @[self.currentTicketOrdinal, [self.currentTicketTotalWinnings stringValue], f, t];
+            NSArray *rowData = @[self.currentTicketOrdinal, [self.currentTicketTotalWinnings stringValue], [self.currentTicketTotalWinningsNo3s stringValue], f, t];
             [self.tableData addObject: rowData];
         }
     }
@@ -150,31 +159,42 @@
     });
 }
 
-- (void) getWinningNumbers: (NSString*) url {
+- (void) showAlert: (NSString*) headline withContent: (NSString*) content {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinner stopAnimating];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle: headline
+                                                                       message: content
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
+                                                                  [alert dismissViewControllerAnimated:YES completion:nil];
+                                                              }];
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];                                                });
+}
 
-    WinningNumbersParser* winningNumbersParser = [[WinningNumbersParser alloc] init];
+- (void) getWinningNumbers: (NSString*) draw_date {
 
+    NSString* url = @"https://resultsservice.lottery.ie/resultsservice.asmx/GetResults?drawType=Lotto&lastNumberOfDraws=50";
+    WinningNumbersParser* winningNumbersParser = [[WinningNumbersParser alloc] initWithdrawDate: draw_date];
+    NSLog(@"Sending request: %@", url);
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask * dataTask = [session dataTaskWithURL:[NSURL URLWithString: url]
                                              completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                                                  if(error == nil)
                                                  {
+                                                     NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                     NSLog(@"Received lottery response %@", dataStr);
+                                                     if (![dataStr containsString: @"Prize"]) {
+                                                         [self showAlert: @"Bad Response From Lotto API" withContent: [NSString stringWithFormat:@"Lotto API returned a bad respose:\n %@", dataStr]];
+
+                                                     }
                                                      NSXMLParser * numbersXmlParser = [[NSXMLParser alloc] initWithData:data];
                                                      [numbersXmlParser setDelegate: winningNumbersParser];
                                                      [numbersXmlParser parse];
                                                  } else {
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         [self.spinner stopAnimating];
-                                                         NSLog(@"Error in connecting %@", error);
-                                                         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"No Network"
-                                                                                                                        message:@"Could not connect to lottery site. Please try again"
-                                                                                                                 preferredStyle:UIAlertControllerStyleAlert];
-                                                         UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                                                                               handler:^(UIAlertAction * action) {
-                                                                                                                   [alert dismissViewControllerAnimated:YES completion:nil];
-                                                                                                               }];
-                                                         [alert addAction:defaultAction];
-                                                         [self presentViewController:alert animated:YES completion:nil];                                                });
+                                                     NSLog(@"Error in connecting %@", error);
+                                                     [self showAlert: @"No Network" withContent:@"Could not connect to lottery site. Please try again"];
                                                  }
                                              }];
     [dataTask resume];
