@@ -55,7 +55,7 @@
 }
 
 - (void) debugSetup {
-    [self initXmlParser: [[NSBundle mainBundle] URLForResource:@"example7" withExtension:@".xml"]];
+    [self initXmlParser: [[NSBundle mainBundle] URLForResource:@"example9" withExtension:@".xml"]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -130,24 +130,24 @@
         if (matchings >= 3 || (matchings == 2 && extraNum)) {
             self.currentTicketWinner = YES;
         }
-        int addIfNeeded = extraNum ? 0 : 1;
+        int extraNumIfNeeded = extraNum ? 1 : 0;
         NSNumber *currentBlockWinning = 0;
         switch (matchings) {
             case 6: currentBlockWinning = self.prizesArray[0]; break;
-            case 5: currentBlockWinning = self.prizesArray[1+addIfNeeded]; break;
-            case 4: currentBlockWinning = self.prizesArray[3+addIfNeeded]; break;
-            case 3: currentBlockWinning = self.prizesArray[5+addIfNeeded]; break;
+            case 5: currentBlockWinning = self.prizesArray[2-extraNumIfNeeded]; break;
+            case 4: currentBlockWinning = self.prizesArray[4-extraNumIfNeeded]; break;
+            case 3: currentBlockWinning = self.prizesArray[6-extraNumIfNeeded]; break;
         }
         if (matchings == 2 && extraNum) {
             currentBlockWinning = self.prizesArray[7];
         }
-        long currentBlockLong = [currentBlockWinning longValue];
+        long currentBlockLong = [currentBlockWinning integerValue];
         self.currentTicketWinningsList = [self.currentTicketWinningsList stringByAppendingString: [NSString stringWithFormat: @"%lu, ", currentBlockLong]];
-        self.currentTicketTotalWinnings = @([self.currentTicketTotalWinnings longValue] + currentBlockLong);
-        self.NSNumberTotalWins = @([self.NSNumberTotalWins longValue] + currentBlockLong);
-        if ([currentBlockWinning longValue] != 3) {
-            self.currentTicketTotalWinningsNo3s = @([self.currentTicketTotalWinningsNo3s longValue] + currentBlockLong);
-            self.NSNumberTotalNetbetWins = @([self.NSNumberTotalNetbetWins longValue] + currentBlockLong);
+        self.currentTicketTotalWinnings = @([self.currentTicketTotalWinnings integerValue] + currentBlockLong);
+        self.NSNumberTotalWins = @([self.NSNumberTotalWins integerValue] + currentBlockLong);
+        if ([currentBlockWinning integerValue] != 3) {
+            self.currentTicketTotalWinningsNo3s = @([self.currentTicketTotalWinningsNo3s integerValue] + currentBlockLong);
+            self.NSNumberTotalNetbetWins = @([self.NSNumberTotalNetbetWins integerValue] + currentBlockLong);
         }
     }
 
@@ -185,23 +185,31 @@
 
 - (void) getWinningNumbers: (NSString*) draw_date {
 
-    NSString* url = @"https://resultsservice.lottery.ie/resultsservice.asmx/GetResults?drawType=Lotto&lastNumberOfDraws=50";
-    WinningNumbersParser* winningNumbersParser = [[WinningNumbersParser alloc] initWithdrawDate: draw_date];
-    NSLog(@"Sending request: %@", url);
+    NSString* url = @"https://irishlottoresults.ie/ajaxcontrol.php";
+    WinningNumbersParser* winningNumbersParser = [[WinningNumbersParser alloc] init];
+    NSLog(@"Sending request: %@ for draw date %@", url, draw_date);
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"POST"];
+    NSString *post = [NSString stringWithFormat:@"lrseldate=%@",draw_date];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    NSURLSessionDataTask * dataTask = [session dataTaskWithURL:[NSURL URLWithString: url]
+    NSURLSessionDataTask * dataTask = [session dataTaskWithRequest: request
                                              completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                                                  if(error == nil)
                                                  {
                                                      NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                      NSLog(@"Received lottery response %@", dataStr);
-                                                     if (![dataStr containsString: @"Prize"]) {
+                                                     if (![dataStr containsString: @"winners"]) {
                                                          [self showAlert: @"Bad Response From Lotto API" withContent: [NSString stringWithFormat:@"Lotto API returned a bad respose:\n %@", dataStr]];
 
                                                      }
-                                                     NSXMLParser * numbersXmlParser = [[NSXMLParser alloc] initWithData:data];
-                                                     [numbersXmlParser setDelegate: winningNumbersParser];
-                                                     [numbersXmlParser parse];
+                                                     [winningNumbersParser parseResults:data];
                                                  } else {
                                                      NSLog(@"Error in connecting %@", error);
                                                      [self showAlert: @"No Network" withContent:@"Could not connect to lottery site. Please try again"];

@@ -350,7 +350,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hartman.LotteryiPadHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a9bea978-167e-435c-9d08-680df9117fa6";
+				PROVISIONING_PROFILE = "5ca7f572-15c8-4558-bfee-5315843d21be";
 				PROVISIONING_PROFILE_SPECIFIER = WildCardManyServices;
 			};
 			name = Debug;
@@ -366,7 +366,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hartman.LotteryiPadHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a9bea978-167e-435c-9d08-680df9117fa6";
+				PROVISIONING_PROFILE = "5ca7f572-15c8-4558-bfee-5315843d21be";
 				PROVISIONING_PROFILE_SPECIFIER = WildCardManyServices;
 			};
 			name = Release;

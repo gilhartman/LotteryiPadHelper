@@ -10,8 +10,6 @@
 #import "WinningNumbersParser.h"
 
 @interface WinningNumbersParser ()
-@property (nonatomic, strong) NSXMLParser *numbersXmlParser;
-@property (nonatomic, strong) NSString *drawDate;
 @property (nonatomic, strong) NSMutableArray *winningNumbers;
 @property (nonatomic, strong) NSMutableArray *prizes;
 @end
@@ -23,65 +21,29 @@ Boolean insidePrize = NO;
 Boolean insideDrawDate = NO;
 Boolean foundDraw = NO;
 
--(id)initWithdrawDate:(NSString *)draw_date
-{
-    self = [super init];
-    if (self) {
-        self.drawDate = draw_date;
-        self.winningNumbers = [[NSMutableArray alloc]init];
-        self.prizes = [[NSMutableArray alloc]init];
-    }
+-(id) init {
+    self.winningNumbers = [[NSMutableArray alloc]init];
+    self.prizes = [[NSMutableArray alloc]init];
     return self;
 }
 
--(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
-    if ([elementName isEqualToString: @"DrawDate"]) {
-        insideDrawDate = YES;
+- (void) parseResults:(NSData *)data {
+    NSError *myError = nil;
+    NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&myError];
+    if (!result) {
+        return;
     }
-    if (foundDraw) {
-        if ([elementName isEqualToString: @"Number"]) {
-            insideNumber = YES;
-        }
-        if ([elementName isEqualToString: @"Prize"]) {
-            insidePrize = YES;
-        }
+    NSDictionary* winningNumbersDict = [result objectForKey:@"lr"];
+    NSLog(@"winningNumbersDict: %@", winningNumbersDict);
+    for (int i=1; i<8; i++) {
+        NSObject* obj = [winningNumbersDict objectForKey:[NSString stringWithFormat:@"Num_%d", i]];
+        [self.winningNumbers addObject: [NSString stringWithFormat:@"%@", obj]];
     }
-}
-
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
-{
-    if (insideDrawDate) {
-        if ([string hasPrefix:self.drawDate]) {
-            NSLog(@"found drawDate: %@", string);
-            foundDraw = YES;
-        }
-    }
-    if (insideNumber) {
-        NSLog(@"found number: %@", string);
-        [self.winningNumbers addObject: string];
-    }
-    if (insidePrize) {
-        NSLog(@"found prize: %@", string);
-        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-        f.numberStyle = NSNumberFormatterDecimalStyle;
-        NSNumber *prizeMoney = [f numberFromString:string];
-        [self.prizes addObject: prizeMoney];
-    }
-}
-
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
-
-    if ([elementName isEqualToString: @"DrawDate"]) {
-        insideDrawDate = NO;
-    }
-    if ([elementName isEqualToString: @"Number"]) {
-        insideNumber = NO;
-    }
-    if ([elementName isEqualToString: @"Prize"]) {
-        insidePrize = NO;
-    }
-    if ([elementName isEqualToString: @"DrawResult"]) {
-        foundDraw = NO;
+    NSArray* winningResultsArray = [result objectForKey:@"wr"];
+    NSLog(@"winningResultsArray: %@", winningResultsArray);
+    for (int i=0; i<8; i++) {
+        NSObject* obj = [winningResultsArray[i] objectForKey:@"iamount"];
+        [self.prizes addObject: [[NSString stringWithFormat:@"%@", obj] stringByReplacingOccurrencesOfString:@"," withString:@""]];
     }
 }
 

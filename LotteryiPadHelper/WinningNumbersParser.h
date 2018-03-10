@@ -11,9 +11,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WinningNumbersParser : NSObject <NSXMLParserDelegate>
+@interface WinningNumbersParser : NSObject
 
--(id)initWithdrawDate:(NSString *)draw_date;
+-(id) init;
+
+- (void) parseResults:(NSData *)data;
 
 - (NSArray*) getWinningNumbers;
 
