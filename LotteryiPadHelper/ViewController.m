@@ -19,15 +19,20 @@
 @property (weak, nonatomic) IBOutlet UITextField *number6;
 @property (weak, nonatomic) IBOutlet UITextField *extraNumber;
 @property (weak, nonatomic) IBOutlet UILabel *drawDate;
+@property (weak, nonatomic) IBOutlet UILabel *totalWins;
+@property (weak, nonatomic) IBOutlet UILabel *netbetWins;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, strong) NSString *currentTicketOrdinal;
 @property (nonatomic, strong) NSNumber *currentTicketTotalWinnings;
 @property (nonatomic, strong) NSNumber *currentTicketTotalWinningsNo3s;
+@property (nonatomic, strong) NSNumber *NSNumberTotalWins;
+@property (nonatomic, strong) NSNumber *NSNumberTotalNetbetWins;
 @property (nonatomic, strong) NSString *currentTicketWinningsList;
 @property (nonatomic, strong) NSString *currentTicketFirstBetNumbers;
 @property (nonatomic) bool currentTicketWinner;
-@property (nonatomic, strong) NSMutableArray *numbersArray;
+@property (nonatomic, strong) NSMutableArray *UITextFieldNumbersArray;
+@property (nonatomic, strong) NSArray *winningNumbersArray;
 @property (nonatomic, strong) NSArray *prizesArray;
 @property (nonatomic, strong) NSXMLParser *xmlParser;
 @property (nonatomic, strong) NSMutableArray *tableData;
@@ -38,7 +43,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.numbersArray = [[NSMutableArray alloc] initWithObjects: self.number1,self.number2,self.number3,self.number4,self.number5,self.number6,nil];
+    self.UITextFieldNumbersArray = [[NSMutableArray alloc] initWithObjects: self.number1,self.number2,self.number3,self.number4,self.number5,self.number6,nil];
     self.tableData = [[NSMutableArray alloc] init];
     [self.tableview registerClass:[MultiColumnTableViewCell class] forCellReuseIdentifier:@"Cell"];
     self.tableview.separatorColor = [UIColor lightGrayColor];
@@ -116,12 +121,12 @@
             self.currentTicketFirstBetNumbers = [guessString copy];
         }
         int matchings = 0;
-        for (UITextField *number in self.numbersArray) {
-            if ([numersInBlock containsObject: number.text]) {
+        for (NSString *number in [self.winningNumbersArray subarrayWithRange:NSMakeRange(0,6)]) {
+            if ([numersInBlock containsObject: number]) {
                 matchings += 1;
             }
         }
-        BOOL extraNum = [numersInBlock containsObject: self.extraNumber.text];
+        BOOL extraNum = [numersInBlock containsObject: self.winningNumbersArray[6]];
         if (matchings >= 3 || (matchings == 2 && extraNum)) {
             self.currentTicketWinner = YES;
         }
@@ -136,10 +141,13 @@
         if (matchings == 2 && extraNum) {
             currentBlockWinning = self.prizesArray[7];
         }
-        self.currentTicketWinningsList = [self.currentTicketWinningsList stringByAppendingString: [NSString stringWithFormat: @"%lu, ", [currentBlockWinning longValue]]];
-        self.currentTicketTotalWinnings = @([self.currentTicketTotalWinnings longValue] + [currentBlockWinning longValue]);
+        long currentBlockLong = [currentBlockWinning longValue];
+        self.currentTicketWinningsList = [self.currentTicketWinningsList stringByAppendingString: [NSString stringWithFormat: @"%lu, ", currentBlockLong]];
+        self.currentTicketTotalWinnings = @([self.currentTicketTotalWinnings longValue] + currentBlockLong);
+        self.NSNumberTotalWins = @([self.NSNumberTotalWins longValue] + currentBlockLong);
         if ([currentBlockWinning longValue] != 3) {
-            self.currentTicketTotalWinningsNo3s = @([self.currentTicketTotalWinningsNo3s longValue] + [currentBlockWinning longValue]);
+            self.currentTicketTotalWinningsNo3s = @([self.currentTicketTotalWinningsNo3s longValue] + currentBlockLong);
+            self.NSNumberTotalNetbetWins = @([self.NSNumberTotalNetbetWins longValue] + currentBlockLong);
         }
     }
 
@@ -156,6 +164,8 @@
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableview reloadData];
+        [self.totalWins setText:[self.NSNumberTotalWins stringValue]];
+        [self.netbetWins setText:[self.NSNumberTotalNetbetWins stringValue]];
     });
 }
 
@@ -201,17 +211,17 @@
     while (([winningNumbersParser getWinningNumbers] == nil) && ([winningNumbersParser getPrizes] == nil)) {
         [NSThread sleepForTimeInterval:0.3f];
     }
-    NSArray* winningNumbers = [winningNumbersParser getWinningNumbers];
-    NSLog(@"Winning numbers: %@", winningNumbers);
+    self.winningNumbersArray = [winningNumbersParser getWinningNumbers];
+    NSLog(@"Winning numbers: %@", self.winningNumbersArray);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.spinner stopAnimating];
-        [self.number1 setText:winningNumbers[0]];
-        [self.number2 setText:winningNumbers[1]];
-        [self.number3 setText:winningNumbers[2]];
-        [self.number4 setText:winningNumbers[3]];
-        [self.number5 setText:winningNumbers[4]];
-        [self.number6 setText:winningNumbers[5]];
-        [self.extraNumber setText:winningNumbers[6]];
+        [self.number1 setText:self.winningNumbersArray[0]];
+        [self.number2 setText:self.winningNumbersArray[1]];
+        [self.number3 setText:self.winningNumbersArray[2]];
+        [self.number4 setText:self.winningNumbersArray[3]];
+        [self.number5 setText:self.winningNumbersArray[4]];
+        [self.number6 setText:self.winningNumbersArray[5]];
+        [self.extraNumber setText:self.winningNumbersArray[6]];
     });
 
     self.prizesArray = [winningNumbersParser getPrizes];
@@ -224,7 +234,11 @@
     [self.drawDate setText: @""];
     [self.tableData removeAllObjects];
     self.prizesArray = nil;
-    for (UITextField* number in self.numbersArray) {
+    self.NSNumberTotalWins = 0;
+    [self.totalWins setText: @""];
+    self.NSNumberTotalNetbetWins = 0;
+    [self.netbetWins setText: @""];
+    for (UITextField* number in self.UITextFieldNumbersArray) {
         [number setText: @""];
         [self.extraNumber setText:@""];
     }
